@@ -9,7 +9,7 @@
 #import "K12AudioRecorder.h"
 #import <DZFileUtils/DZFileUtils.h>
 #import "K12AudionSession.h"
-#import <Bugly/Bugly.h>
+//#import <Bugly/Bugly.h>
 
 @interface K12AudioRecorder () <AVAudioRecorderDelegate>
 
@@ -51,12 +51,12 @@
     K12AudioShareSessionBecomeAction;
     _recorder = [[AVAudioRecorder alloc] initWithURL:[NSURL fileURLWithPath:path] settings:recordSetting error:&error];
     if (error) {
-        BLYLogError(@"初始化录音播放:%@",error);
+//        BLYLogError(@"初始化录音播放:%@",error);
     }
 
     _recorder.delegate = self;
     if (error) {
-        BLYLogError(@"%@",error);
+//        BLYLogError(@"%@",error);
     } else {
 
     }
@@ -76,7 +76,7 @@
 - (BOOL) record:(NSError*__autoreleasing * )error{
    BOOL buildRecordRet= [self reload];
     _timer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateMeters) userInfo:nil repeats:YES];
-    BLYLogInfo(@"buildRecordRet %d",buildRecordRet);
+//    BLYLogInfo(@"buildRecordRet %d",buildRecordRet);
    return [_recorder record];
 }
 - (void) stop

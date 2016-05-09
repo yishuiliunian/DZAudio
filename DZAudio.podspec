@@ -28,16 +28,7 @@ Pod::Spec.new do |s|
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
-  s.prepare_command = <<-CMD
-          echo pwd
-          myPath=Classes/Gen
-          if [ ! -d "$myPath" ]; then
-            mkdir -p "$myPath"
-          fi
-          protoc pbfile/*.proto --proto_path=pbfile --objc_out=./Classes/Gen
-  CMD
   s.source_files = 'Classes/**/*'
-  s.requires_arc = false
   s.resource_bundles = {
     'DZAudio' => ['Assets/*.png']
   }
@@ -46,4 +37,6 @@ Pod::Spec.new do |s|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit', 'AVFoundation'
+  s.dependency 'DZFileUtils'
+  s.dependency 'DZSinglonFactory'
 end

@@ -9,7 +9,6 @@
 #import "K12AudionSession.h"
 #import "DZSingletonFactory.h"
 #import <AVFoundation/AVFoundation.h>
-#import <Bugly/BuglyLog.h>
 @implementation K12AudionSession
 {
     AVAudioSession* _audioSession;
@@ -36,10 +35,8 @@
     NSError* error;
     [_audioSession setActive:YES error:&error];
     if (error) {
-        BLYLogError(@"Audio Session Become Action error:%@", error);
+//        BLYLogError(@"Audio Session Become Action error:%@", error);
     }
-
-    
 }
 @end
 

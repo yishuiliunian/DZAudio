@@ -9,7 +9,7 @@
 #import "K12AudioPlayer.h"
 #import <AVFoundation/AVFoundation.h>
 #import "DZFileUtils.h"
-#import <Bugly/BuglyLog.h>
+#import "K12AudionSession.h"
 @interface K12AudioPlayer () <AVAudioPlayerDelegate>
 {
     AVAudioPlayer* _player;
@@ -18,19 +18,30 @@
 @end
 
 @implementation K12AudioPlayer
-
+@synthesize delegate = _delegate;
+- (void) dealloc
+{
+    
+}
 - (instancetype) initWithURL:(NSURL*)url
 {
     self = [super init];
     if (!self) {
         return self;
     }
+    [K12AudioShareSession becomeActive];
     _isPlaying = NO;
     _url = url;
     NSError* error;
     _player = [[AVAudioPlayer alloc] initWithContentsOfURL:_url error:&error];
     if (error) {
-        BLYLogError(@"初始化播放音频出错:%@",error);
+        if (error.code == 2003334207) {
+           NSString* path = DZTempFilePathWithExtension(@"arm");
+            [[NSFileManager defaultManager] copyItemAtPath:_url.path toPath:path error:&error];
+            NSLog(@"%@",error);
+            _player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:path] error:&error];
+        }
+//        BLYLogError(@"初始化播放音频出错:%@",error);
     }
     _player.delegate = self;
     return self;
