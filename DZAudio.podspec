@@ -18,6 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
+			DZAudio is tool to recorder and play some audio file
                        DESC
 
   s.homepage         = "https://github.com/<GITHUB_USERNAME>/YHNetCore"
