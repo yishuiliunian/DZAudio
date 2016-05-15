@@ -40,12 +40,12 @@
     }
 
     //配置Recorder，
-    NSString* path = DZTempFilePathWithExtension(@"caf");
+    NSString* path = DZTempFilePathWithExtension(@"aac");
     NSDictionary *recordSetting = [NSDictionary dictionaryWithObjectsAndKeys:
                                    [NSNumber numberWithInt:AVAudioQualityLow],AVEncoderAudioQualityKey,
-                                   [NSNumber numberWithInt:16],AVEncoderBitRateKey,
-                                   [NSNumber numberWithInt:2],AVNumberOfChannelsKey,
+                                   [NSNumber numberWithInt:1],AVNumberOfChannelsKey,
                                    [NSNumber numberWithFloat:44100.0],AVSampleRateKey,
+                                   [NSNumber numberWithInteger:kAudioFormatMPEG4AAC], AVFormatIDKey,
                                    nil];
     NSError* error;
     K12AudioShareSessionBecomeAction;
@@ -77,6 +77,7 @@
    BOOL buildRecordRet= [self reload];
     _timer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateMeters) userInfo:nil repeats:YES];
 //    BLYLogInfo(@"buildRecordRet %d",buildRecordRet);
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryRecord error:nil];
    return [_recorder record];
 }
 - (void) stop
@@ -92,6 +93,7 @@
         [self.delegate k12AudioRecorderEncodeErrorDidOccur:recorder error:error];
     }
 }
+
 
 - (void) audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {

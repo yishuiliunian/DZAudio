@@ -35,12 +35,6 @@
     NSError* error;
     _player = [[AVAudioPlayer alloc] initWithContentsOfURL:_url error:&error];
     if (error) {
-        if (error.code == 2003334207) {
-           NSString* path = DZTempFilePathWithExtension(@"arm");
-            [[NSFileManager defaultManager] copyItemAtPath:_url.path toPath:path error:&error];
-            NSLog(@"%@",error);
-            _player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:path] error:&error];
-        }
 //        BLYLogError(@"初始化播放音频出错:%@",error);
     }
     _player.delegate = self;
@@ -59,6 +53,7 @@
 {
     [self stop];
  
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     if (![_player prepareToPlay]) return NO;
     if(![_player play]) return NO;
     
