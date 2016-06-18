@@ -47,6 +47,7 @@
     [_playTimer invalidate];
     _playTimer = nil;
     _isPlaying = NO;
+
 }
 
 - (BOOL) play
@@ -61,12 +62,25 @@
     [[NSRunLoop mainRunLoop] addTimer:_playTimer forMode:NSRunLoopCommonModes];
     [_playTimer fire];
     _isPlaying = YES;
+    if ([self.delegate respondsToSelector:@selector(k12AudioPlayerDidStartPlay:)]) {
+        [self.delegate k12AudioPlayerDidStartPlay:self];
+    }
     return YES;
 }
 - (void) playCallBack
 {
     if ([self.delegate respondsToSelector:@selector(k12AudioPlayer:playAtTimeOffset:)]) {
         [self.delegate k12AudioPlayer:self playAtTimeOffset:_player.currentTime];
+    }
+}
+
+
+- (void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    if (flag) {
+        if ([self.delegate respondsToSelector:@selector(k12AudioPlayerDidFinishPlay:)]) {
+            [self.delegate k12AudioPlayerDidFinishPlay:self];
+        }
     }
 }
 
