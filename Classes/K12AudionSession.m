@@ -25,8 +25,6 @@
         return self;
     }
     _audioSession = [AVAudioSession sharedInstance];
-    NSError* error=nil;
-    [_audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
     return self;
 }
 
@@ -35,7 +33,7 @@
     NSError* error;
     [_audioSession setActive:YES error:&error];
     if (error) {
-//        BLYLogError(@"Audio Session Become Action error:%@", error);
+        
     }
 }
 @end
