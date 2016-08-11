@@ -76,10 +76,8 @@
 
 - (void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-    if (flag) {
-        if ([self.delegate respondsToSelector:@selector(k12AudioPlayerDidFinishPlay:)]) {
-            [self.delegate k12AudioPlayerDidFinishPlay:self];
-        }
+    if ([self.delegate respondsToSelector:@selector(k12AudioPlayerDidFinishPlay:)]) {
+        [self.delegate k12AudioPlayerDidFinishPlay:self];
     }
 }
 
