@@ -10,6 +10,7 @@
 
 @class K12AudioPlayer;
 @protocol K12AudioPlayerDelegate <NSObject>
+@optional
 - (void) k12AudioPlayer:(K12AudioPlayer*)player playAtTimeOffset:(double)time;
 - (void) k12AudioPlayer:(K12AudioPlayer *)player occurError:(NSError*)error;
 - (void) k12AudioPlayerDidFinishPlay:(K12AudioPlayer *)player;
