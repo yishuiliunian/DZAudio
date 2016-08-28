@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "DZFileUtils.h"
 #import "K12AudionSession.h"
+#import "K12AudionSession.h"
 @interface K12AudioPlayer () <AVAudioPlayerDelegate>
 {
     AVAudioPlayer* _player;
@@ -54,6 +55,7 @@
 {
     [self stop];
  
+    K12AudioShareSessionBecomeAction;
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     if (![_player prepareToPlay]) return NO;
     if(![_player play]) return NO;
@@ -79,6 +81,7 @@
     if ([self.delegate respondsToSelector:@selector(k12AudioPlayerDidFinishPlay:)]) {
         [self.delegate k12AudioPlayerDidFinishPlay:self];
     }
+    K12AudioShareSessionResignAction;
 }
 
 - (NSTimeInterval) playingTime

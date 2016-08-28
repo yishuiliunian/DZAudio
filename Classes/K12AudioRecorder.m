@@ -30,7 +30,6 @@
 
 - (BOOL) reload
 {
-    [K12AudionSession shareSession];
     if (_recorder) {
         _recorder.delegate = nil;
         [_timer invalidate];
@@ -38,7 +37,7 @@
         [_recorder stop];
         [_recorder deleteRecording];
     }
-
+    K12AudioShareSessionBecomeAction;
     //配置Recorder，
     NSString* path = DZTempFilePathWithExtension(@"aac");
     NSDictionary *recordSetting = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -48,7 +47,7 @@
                                    [NSNumber numberWithInteger:kAudioFormatMPEG4AAC], AVFormatIDKey,
                                    nil];
     NSError* error;
-    K12AudioShareSessionBecomeAction;
+
     _recorder = [[AVAudioRecorder alloc] initWithURL:[NSURL fileURLWithPath:path] settings:recordSetting error:&error];
     if (error) {
 //        BLYLogError(@"初始化录音播放:%@",error);
@@ -92,15 +91,16 @@
     if ([self.delegate respondsToSelector:@selector(k12AudioRecorderEncodeErrorDidOccur:error:)]) {
         [self.delegate k12AudioRecorderEncodeErrorDidOccur:recorder error:error];
     }
+    K12AudioShareSessionResignAction;
 }
 
 
 - (void) audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
-    
     if ([self.delegate respondsToSelector:@selector(k12AudioRecorderDidFinishRecording:successfully:)]) {
         [self.delegate k12AudioRecorderDidFinishRecording:recorder successfully:flag];
     }
+    K12AudioShareSessionResignAction;
 }
 
 

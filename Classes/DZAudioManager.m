@@ -8,7 +8,7 @@
 
 #import "DZAudioManager.h"
 #import "K12AudioPlayer.h"
-
+#import "K12AudionSession.h"
 @interface DZAudioManager () <K12AudioPlayerDelegate>
 @property (nonatomic, strong) K12AudioPlayer* player;
 @end
@@ -37,12 +37,15 @@
 
 - (void) k12AudioPlayer:(K12AudioPlayer *)player occurError:(NSError *)error
 {
+    
     self.player = nil;
+    K12AudioShareSessionBecomeAction;
 }
 
 - (void) k12AudioPlayerDidFinishPlay:(K12AudioPlayer *)player
 {
     self.player = nil;
+    K12AudioShareSessionResignAction;
 }
 
 @end

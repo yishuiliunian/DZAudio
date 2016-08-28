@@ -9,9 +9,9 @@
 #import "K12AudionSession.h"
 #import "DZSingletonFactory.h"
 #import <AVFoundation/AVFoundation.h>
+#import <DZLogger/DZLogger.h>
 @implementation K12AudionSession
 {
-    AVAudioSession* _audioSession;
 }
 + (instancetype) shareSession
 {
@@ -24,16 +24,23 @@
     if (!self) {
         return self;
     }
-    _audioSession = [AVAudioSession sharedInstance];
     return self;
 }
 
 - (void) becomeActive
 {
     NSError* error;
-    [_audioSession setActive:YES error:&error];
+    [[AVAudioSession sharedInstance] setActive:YES error:&error];
     if (error) {
-        
+        DDLogError(@"%@",error);
+    }
+}
+- (void) resignActive
+{
+    NSError* error;
+    [[AVAudioSession sharedInstance] setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:&error];
+    if (error) {
+        DDLogError(@"%@",error);
     }
 }
 @end
