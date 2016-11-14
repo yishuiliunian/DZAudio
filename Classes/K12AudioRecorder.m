@@ -35,7 +35,9 @@
         [_timer invalidate];
         _timer = nil;
         [_recorder stop];
-        [_recorder deleteRecording];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:_recorder.url.path]) {
+            [_recorder deleteRecording];
+        }
     }
     K12AudioShareSessionBecomeAction;
     //配置Recorder，
@@ -54,11 +56,6 @@
     }
 
     _recorder.delegate = self;
-    if (error) {
-//        BLYLogError(@"%@",error);
-    } else {
-
-    }
     _recorder.meteringEnabled = YES;
    return  [_recorder prepareToRecord];
 }
@@ -73,17 +70,17 @@
 }
 
 - (BOOL) record:(NSError*__autoreleasing * )error{
-   BOOL buildRecordRet= [self reload];
+    [self stop];
+    BOOL buildRecordRet= [self reload];
     _timer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateMeters) userInfo:nil repeats:YES];
-//    BLYLogInfo(@"buildRecordRet %d",buildRecordRet);
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryRecord error:nil];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryRecord error:error];
    return [_recorder record];
 }
 - (void) stop
 {
     [_timer invalidate];
     _timer = nil;
-     [_recorder stop];
+    [_recorder stop];
 }
 
 - (void) audioRecorderEncodeErrorDidOccur:(AVAudioRecorder *)recorder error:(NSError *)error
