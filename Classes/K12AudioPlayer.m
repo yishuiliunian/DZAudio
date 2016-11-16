@@ -78,6 +78,7 @@
 
 - (void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
+    _isPlaying = NO;
     if ([self.delegate respondsToSelector:@selector(k12AudioPlayerDidFinishPlay:)]) {
         [self.delegate k12AudioPlayerDidFinishPlay:self];
     }
