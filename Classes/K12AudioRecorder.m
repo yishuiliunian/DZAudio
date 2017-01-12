@@ -25,6 +25,7 @@
     if (!self) {
         return self;
     }
+    _audoFormat =kAudioFormatMPEG4AAC;
     return self;
 }
 
@@ -41,13 +42,28 @@
     }
     K12AudioShareSessionBecomeAction;
     //配置Recorder，
-    NSString* path = DZTempFilePathWithExtension(@"aac");
-    NSDictionary *recordSetting = [NSDictionary dictionaryWithObjectsAndKeys:
-                                   [NSNumber numberWithInt:AVAudioQualityLow],AVEncoderAudioQualityKey,
-                                   [NSNumber numberWithInt:1],AVNumberOfChannelsKey,
-                                   [NSNumber numberWithFloat:44100.0],AVSampleRateKey,
-                                   [NSNumber numberWithInteger:kAudioFormatMPEG4AAC], AVFormatIDKey,
-                                   nil];
+    NSString* path = nil;
+    NSMutableDictionary* recordSetting = [NSMutableDictionary new];
+    if (_audoFormat == kAudioFormatLinearPCM) {
+        path =DZTempFilePathWithExtension(@"caf");
+        [recordSetting setValue :[NSNumber numberWithInt:kAudioFormatLinearPCM] forKey:AVFormatIDKey];
+        [recordSetting setValue:[NSNumber numberWithFloat:16000] forKey:AVSampleRateKey];
+        [recordSetting setValue:[NSNumber numberWithInt: 2] forKey:AVNumberOfChannelsKey];
+        
+        [recordSetting setValue :[NSNumber numberWithInt:16] forKey:AVLinearPCMBitDepthKey];
+        [recordSetting setValue :[NSNumber numberWithBool:NO] forKey:AVLinearPCMIsBigEndianKey];
+        [recordSetting setValue :[NSNumber numberWithBool:NO] forKey:AVLinearPCMIsFloatKey];
+    } else {
+        path = DZTempFilePathWithExtension(@"aac");
+        NSDictionary *rs = [NSDictionary dictionaryWithObjectsAndKeys:
+                                       [NSNumber numberWithInt:AVAudioQualityLow],AVEncoderAudioQualityKey,
+                                       [NSNumber numberWithInt:1],AVNumberOfChannelsKey,
+                                       [NSNumber numberWithFloat:16000],AVSampleRateKey,
+                                       [NSNumber numberWithInteger:_audoFormat], AVFormatIDKey,
+                                       nil];
+        [recordSetting addEntriesFromDictionary:rs];
+    }
+ 
     NSError* error;
 
     _recorder = [[AVAudioRecorder alloc] initWithURL:[NSURL fileURLWithPath:path] settings:recordSetting error:&error];

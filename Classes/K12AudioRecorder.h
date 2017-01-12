@@ -21,6 +21,7 @@
 @interface K12AudioRecorder : NSObject
 @property (nonatomic, weak) id<K12AudioRecorderDelegate> delegate;
 @property (nonatomic, strong, readonly) AVAudioRecorder* recorder;
+@property (nonatomic, assign) AudioFormatID audoFormat;
 - (BOOL) record:(NSError*__autoreleasing * )error;
 - (void) stop;
 @end
